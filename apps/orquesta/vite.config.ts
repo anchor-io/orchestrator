@@ -4,10 +4,20 @@ import { defineConfig } from 'vitest/config';
 import { playwright } from '@vitest/browser-playwright';
 import adapter from '@sveltejs/adapter-node';
 import { sveltekit } from '@sveltejs/kit/vite';
+import { searchForWorkspaceRoot } from 'vite';
+import { fileURLToPath } from 'node:url';
+
+const appRoot = fileURLToPath(new URL('.', import.meta.url));
+const workspaceRoot = searchForWorkspaceRoot(appRoot);
 
 const playwrightWsEndpoint = 'ws://localhost:3201/';
 
 export default defineConfig({
+  server: {
+    fs: {
+      allow: [workspaceRoot]
+    }
+  },
   plugins: [
     tailwindcss(),
     sveltekit({
