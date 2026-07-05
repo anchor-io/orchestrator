@@ -75,6 +75,10 @@
   --chart-4: #38b66b;
   --chart-5: #d1aa24;
   --radius: 0rem;
+  --radius-control: 0.25rem;
+  --radius-item: 0.25rem;
+  --radius-overlay: 0.25rem;
+  --radius-bar: 0.125rem;
   --sidebar: #08090b;
   --sidebar-foreground: #fafafa;
   --sidebar-primary: #b9d765;
@@ -194,6 +198,10 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  --radius-control: var(--radius-control);
+  --radius-item: var(--radius-item);
+  --radius-overlay: var(--radius-overlay);
+  --radius-bar: var(--radius-bar);
 }
 
 @layer base {

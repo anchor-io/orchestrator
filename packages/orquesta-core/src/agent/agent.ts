@@ -11,7 +11,5 @@ export class OrquestaAgent {
     this.agentDir = cfg.agentDir;
   }
 
-    start() {
-
-  }
+  start() {}
 }

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Command as CommandPrimitive } from 'bits-ui';
   import { cn } from '../../../utils.js';
-  import { CheckIcon } from 'phosphor-svelte';
+  import CheckIcon from 'phosphor-svelte/lib/CheckIcon';
 
   let {
     ref = $bindable(null),
@@ -15,7 +15,7 @@
   bind:ref
   data-slot="command-item"
   class={cn(
-    "group/command-item relative flex cursor-default items-center gap-2 border border-transparent px-2 py-1.5  text-xs   text-muted-foreground outline-hidden select-none data-selected:border-primary/50 data-selected:bg-muted data-selected:text-foreground data-selected:*:[svg]:text-link data-[checked=true]:text-link in-data-[slot=dialog-content]:rounded-none! data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+    "group/command-item relative flex cursor-default items-center gap-2 border border-transparent px-2 py-1.5  text-xs   text-muted-foreground outline-hidden select-none data-selected:border-primary/50 data-selected:bg-muted data-selected:text-foreground data-selected:*:[svg]:text-link data-[checked=true]:text-link rounded-item in-data-[slot=dialog-content]:rounded-item! data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
     className
   )}
   {...restProps}

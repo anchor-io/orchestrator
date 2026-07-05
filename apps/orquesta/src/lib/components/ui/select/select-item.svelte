@@ -18,7 +18,7 @@
   {value}
   data-slot="select-item"
   class={cn(
-    "focus:bg-primary/18 focus:text-foreground not-data-[variant=destructive]:focus:**:text-foreground gap-2.5 rounded-none py-2 pr-8 pl-3  text-xs font-medium  text-muted-foreground [&_svg:not([class*='size-'])]:size-3.5 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 data-highlighted:bg-primary/18 data-highlighted:text-foreground relative flex w-full cursor-default items-center outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+    "focus:bg-primary/18 focus:text-foreground not-data-[variant=destructive]:focus:**:text-foreground gap-2.5 rounded-item py-2 pr-8 pl-3  text-xs font-medium  text-muted-foreground [&_svg:not([class*='size-'])]:size-3.5 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 data-highlighted:bg-primary/18 data-highlighted:text-foreground relative flex w-full cursor-default items-center outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
     className
   )}
   {...restProps}

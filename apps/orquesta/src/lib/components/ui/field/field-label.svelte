@@ -15,7 +15,7 @@
   bind:ref
   data-slot="field-label"
   class={cn(
-    'has-data-checked:border-primary/40 has-data-checked:bg-primary/10 gap-2 leading-relaxed group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-none has-[>[data-slot=field]]:border has-[>[data-slot=field]]:border-border *:data-[slot=field]:p-4 group/field-label peer/field-label flex w-fit leading-snug',
+    'has-data-checked:border-primary/40 has-data-checked:bg-primary/10 gap-2 leading-relaxed group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-control has-[>[data-slot=field]]:border has-[>[data-slot=field]]:border-border *:data-[slot=field]:p-4 group/field-label peer/field-label flex w-fit leading-snug',
     'has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col',
     className
   )}
