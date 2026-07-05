@@ -25,17 +25,17 @@
   },
   "dependencies": {
     "@anchorsoft/orquesta-shared": "workspace:*",
-    "@earendil-works/pi-coding-agent": "^0.80.2",
-    "@parcel/watcher": "^2.5.6",
-    "jsonc-parser": "^3.3.1",
-    "valibot": "^1.4.1"
+    "@earendil-works/pi-coding-agent": "0.80.3",
+    "@parcel/watcher": "2.5.6",
+    "jsonc-parser": "3.3.1",
+    "valibot": "1.4.2"
   },
   "devDependencies": {
-    "@types/node": "^24",
-    "@typescript/native-preview": "7.0.0-dev.20260421.2",
-    "oxfmt": "^0.54.0",
-    "oxlint": "^1.69.0",
-    "oxlint-tsgolint": "^0.23.0",
-    "vitest": "^4.1.8"
+    "@types/node": "24",
+    "@typescript/native-preview": "7.0.0-dev.20260704.1",
+    "oxfmt": "0.57.0",
+    "oxlint": "1.72.0",
+    "oxlint-tsgolint": "0.24.0",
+    "vitest": "4.1.9"
   }
 }
