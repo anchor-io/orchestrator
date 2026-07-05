@@ -12,3 +12,5 @@ export {
   type Env,
   type LoadedDocument,
 } from "./config/index.ts";
+
+export { runAgent } from "./agent";

@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@anchorsoft/orquesta-shared": "workspace:*",
+    "@earendil-works/pi-coding-agent": "^0.80.2",
     "@parcel/watcher": "^2.5.6",
     "jsonc-parser": "^3.3.1",
     "valibot": "^1.4.1"
