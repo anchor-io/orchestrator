@@ -24,9 +24,11 @@ export {
 export {
   ConfigSchema,
   DEFAULT_LOCALE,
+  PiConfigSchema,
   SUPPORTED_LOCALES,
   type Config,
   type ConfigInput,
+  type PiConfig,
 } from "./schema.ts";
 export { ConfigWatcher } from "./watcher.ts";
 export { writeConfig } from "./writer.ts";

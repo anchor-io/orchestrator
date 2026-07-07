@@ -93,18 +93,45 @@ describe("config", () => {
   });
 
   it("merges layers from lowest to highest priority", async () => {
-    const writeResult = await manager.updateGlobal({ lang: "es" });
+    const writeResult = await manager.updateGlobal({
+      lang: "es",
+      pi: { agentDir: "global-pi" },
+    });
     expect(writeResult.success).toBe(true);
 
     await fs.mkdir(path.join(tmp, "nested"), { recursive: true });
-    await fs.writeFile(path.join(tmp, "orquesta.jsonc"), '{ "lang": "en" }');
+    await fs.writeFile(
+      path.join(tmp, "orquesta.jsonc"),
+      '{ "lang": "en", "pi": { "sessionDir": "project-sessions" } }',
+    );
     await fs.mkdir(path.join(tmp, ".orquesta"), { recursive: true });
-    await fs.writeFile(path.join(tmp, ".orquesta", "orquesta.jsonc"), '{ "lang": "es" }');
+    await fs.writeFile(
+      path.join(tmp, ".orquesta", "orquesta.jsonc"),
+      '{ "lang": "es", "pi": { "agentDir": "workspace-pi" } }',
+    );
 
     const result = await manager.get(tmp);
     expect(result.success).toBe(true);
     if (!result.success) return;
     expect(result.value.lang).toBe("es");
+    expect(result.value.pi?.agentDir).toBe("workspace-pi");
+    expect(result.value.pi?.sessionDir).toBe("project-sessions");
+  });
+
+  it("accepts Pi config", async () => {
+    const writeResult = await manager.updateGlobal({
+      pi: {
+        agentDir: path.join(tmp, "pi", "agent"),
+        sessionDir: path.join(tmp, "pi", "sessions"),
+      },
+    });
+    expect(writeResult.success).toBe(true);
+
+    const result = await manager.get(tmp);
+    expect(result.success).toBe(true);
+    if (!result.success) return;
+    expect(result.value.pi?.agentDir).toBe(path.join(tmp, "pi", "agent"));
+    expect(result.value.pi?.sessionDir).toBe(path.join(tmp, "pi", "sessions"));
   });
 
   it("applies the ORQUESTA_CONFIG_CONTENT override", async () => {
