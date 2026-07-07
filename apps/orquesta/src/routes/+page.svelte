@@ -2,9 +2,8 @@
   import Chat from '$lib/components/workbench/chat/chat.svelte';
   import { getSidebarContext } from '$lib/components/workbench/sidebar-context';
   import { ElementSize } from 'runed';
-  import Inspect from 'svelte-inspect-value';
   import { cubicOut } from 'svelte/easing';
-  import { fly, slide } from 'svelte/transition';
+  import { fly, slide, type FlyParams, type SlideParams } from 'svelte/transition';
 
   let shell = $state<HTMLElement>();
   const shellSize = new ElementSize(() => shell);
@@ -24,12 +23,12 @@
     panels.right.enabled && leftVisible && remainingSidebarBudget >= panels.right.width
   );
 
-  const slideX = { axis: 'x' as const, duration: 180, easing: cubicOut };
-  const flyLeft = { x: -16, duration: 180, easing: cubicOut };
-  const flyRight = { x: 16, duration: 180, easing: cubicOut };
+  const slideX: SlideParams = { axis: 'x', duration: 180, easing: cubicOut };
+  const flyLeft: FlyParams = { x: -16, duration: 180, easing: cubicOut };
+  const flyRight: FlyParams = { x: 16, duration: 180, easing: cubicOut };
 </script>
 
-<Inspect.Panel
+<!-- <Inspect.Panel
   appearance="floating"
   opacity={true}
   align="center bottom"
@@ -41,7 +40,7 @@
     leftVisible,
     rightVisible
   }}
-/>
+/> -->
 <main
   bind:this={shell}
   class="flex overflow-hidden min-h-dvh min-w-dvw border bg-background text-foreground"
