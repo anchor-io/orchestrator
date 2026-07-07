@@ -48,9 +48,7 @@ export class OrquestaAgent {
     return this.#pi.stop();
   }
 
-  onEvent(
-    listener: RpcEventListener,
-  ): ReturnType<RpcClientInstance["onEvent"]> {
+  onEvent(listener: RpcEventListener): ReturnType<RpcClientInstance["onEvent"]> {
     return this.#pi.onEvent(listener);
   }
 
@@ -64,9 +62,7 @@ export class OrquestaAgent {
     return this.#pi.prompt(...args);
   }
 
-  steer(
-    ...args: Parameters<RpcClientInstance["steer"]>
-  ): ReturnType<RpcClientInstance["steer"]> {
+  steer(...args: Parameters<RpcClientInstance["steer"]>): ReturnType<RpcClientInstance["steer"]> {
     return this.#pi.steer(...args);
   }
 
@@ -148,9 +144,7 @@ export class OrquestaAgent {
     return this.#pi.abortRetry();
   }
 
-  bash(
-    ...args: Parameters<RpcClientInstance["bash"]>
-  ): ReturnType<RpcClientInstance["bash"]> {
+  bash(...args: Parameters<RpcClientInstance["bash"]>): ReturnType<RpcClientInstance["bash"]> {
     return this.#pi.bash(...args);
   }
 
@@ -174,9 +168,7 @@ export class OrquestaAgent {
     return this.#pi.switchSession(...args);
   }
 
-  fork(
-    ...args: Parameters<RpcClientInstance["fork"]>
-  ): ReturnType<RpcClientInstance["fork"]> {
+  fork(...args: Parameters<RpcClientInstance["fork"]>): ReturnType<RpcClientInstance["fork"]> {
     return this.#pi.fork(...args);
   }
 
@@ -198,9 +190,7 @@ export class OrquestaAgent {
     return this.#pi.getTree();
   }
 
-  getLastAssistantText(): ReturnType<
-    RpcClientInstance["getLastAssistantText"]
-  > {
+  getLastAssistantText(): ReturnType<RpcClientInstance["getLastAssistantText"]> {
     return this.#pi.getLastAssistantText();
   }
 
@@ -242,17 +232,16 @@ function toRpcClientOptions(options: OrquestaAgentOptions): RpcClientOptions {
   const args: string[] = [];
 
   if (options.tools?.length) args.push("--tools", options.tools.join(","));
-  if (options.excludeTools?.length)
-    args.push("--exclude-tools", options.excludeTools.join(","));
+  if (options.excludeTools?.length) args.push("--exclude-tools", options.excludeTools.join(","));
   if (options.extraArgs) args.push(...options.extraArgs);
   if (options.args) args.push(...options.args);
 
   const env = { ...options.env };
   const orquestaConfigDir = globalConfigDir({ ...process.env, ...options.env });
-  env.PI_CODING_AGENT_DIR =
-    pi?.agentDir ?? path.join(orquestaConfigDir, "pi", "agent");
-  env.PI_CODING_AGENT_SESSION_DIR =
-    pi?.sessionDir ?? path.join(orquestaConfigDir, "pi", "sessions");
+  const defaultPiAgentDir = path.join(orquestaConfigDir, ".pi", "agent");
+
+  env.PI_CODING_AGENT_DIR = pi?.agentDir ?? defaultPiAgentDir;
+  env.PI_CODING_AGENT_SESSION_DIR = pi?.sessionDir ?? path.join(defaultPiAgentDir, "sessions");
 
   const rpcOptions: RpcClientOptions = { cliPath, env, args };
   if (options.cwd) rpcOptions.cwd = options.cwd;
