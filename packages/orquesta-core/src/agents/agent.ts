@@ -3,6 +3,7 @@ import {
   type RpcClientOptions,
   type RpcEventListener,
 } from "@earendil-works/pi-coding-agent";
+import { randomUUID } from "node:crypto";
 import path from "node:path";
 import { fileURLToPath } from "url";
 import { globalConfigDir, type PiConfig } from "../config/index.ts";
@@ -11,41 +12,81 @@ const piIndex = import.meta.resolve("@earendil-works/pi-coding-agent");
 const cliPath = fileURLToPath(new URL("./cli.js", piIndex));
 
 export type RpcClientInstance = InstanceType<typeof RpcClient>;
+export type AgentId = string;
+export type AgentLifecycleState =
+  | "starting"
+  | "idle"
+  | "running"
+  | "stopping"
+  | "stopped"
+  | "error";
+
+type AgentEvent = Parameters<RpcEventListener>[0];
 
 export interface OrquestaAgentOptions {
+  /** Agent identifier. Generated when omitted. */
+  id?: AgentId;
   /** Working directory for the agent. */
   cwd?: string;
   /** Existing session file to switch to after startup. */
   sessionPath?: string;
-  /** Pi-specific config loaded from Orquesta's config. */
   pi?: PiConfig;
+  /** Pi-specific tools. */
   tools?: string[];
+  /** Pi-specific tools. */
   excludeTools?: string[];
+  /** PiCLI-specific extra args. */
   extraArgs?: string[];
   /** Additional environment variables for the child process. */
   env?: Record<string, string>;
-  /** Escape hatch for per-agent Pi CLI args. Prefer the typed options when possible. */
+  /** Escape hatch for Pi CLI args. Prefer the typed options when possible. */
   args?: string[];
 }
 
 export class OrquestaAgent {
+  readonly id: AgentId;
+  readonly cwd: string | undefined;
+  readonly sessionPath: string | undefined;
+
+  #state: AgentLifecycleState = "stopped";
+
   #pi: RpcClientInstance;
-  #sessionPath: string | undefined;
 
   constructor(options: OrquestaAgentOptions = {}) {
-    this.#sessionPath = options.sessionPath;
+    this.id = options.id ?? randomUUID();
+    this.cwd = options.cwd;
+    this.sessionPath = options.sessionPath;
     this.#pi = new RpcClient(toRpcClientOptions(options));
+    this.#pi.onEvent((event) => this.#handleEvent(event));
+  }
+
+  get state(): AgentLifecycleState {
+    return this.#state;
   }
 
   async start(): Promise<void> {
-    await this.#pi.start();
-    if (this.#sessionPath) {
-      await this.#pi.switchSession(this.#sessionPath);
+    this.#state = "starting";
+    try {
+      await this.#pi.start();
+      if (this.sessionPath) {
+        await this.#pi.switchSession(this.sessionPath);
+      }
+      this.#state = "idle";
+    } catch (error) {
+      this.#state = "error";
+      throw error;
     }
   }
 
-  stop(): ReturnType<RpcClientInstance["stop"]> {
-    return this.#pi.stop();
+  async stop(): Promise<void> {
+    this.#state = "stopping";
+    try {
+      await this.#pi.stop();
+      this.#state = "stopped";
+    } catch (error) {
+      this.#state = "error";
+      throw error;
+    }
   }
 
   onEvent(listener: RpcEventListener): ReturnType<RpcClientInstance["onEvent"]> {
@@ -224,6 +265,11 @@ export class OrquestaAgent {
     ...args: Parameters<RpcClientInstance["promptAndWait"]>
   ): ReturnType<RpcClientInstance["promptAndWait"]> {
     return this.#pi.promptAndWait(...args);
+  }
+
+  #handleEvent(event: AgentEvent): void {
+    if (event.type === "agent_start") this.#state = "running";
+    if (event.type === "agent_end") this.#state = "idle";
   }
 }
 
