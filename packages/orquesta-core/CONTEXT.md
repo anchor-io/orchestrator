@@ -15,8 +15,12 @@ The package is scaffolded as a private source-first workspace package. Add publi
 
 ## Domain Terms
 
-- `OrquestaAgent`: A uniform Orquesta wrapper around one Pi `RpcClient` process. Main agents and subagents use this same abstraction.
+- `OrquestaAgent`: A uniform Orquesta wrapper around one Pi `RpcClient` process with the Orquesta Pi Extension loaded. Main agents and subagents use this same abstraction.
 - `AgentRegistry`: The Orquesta Core owner for multiple live `OrquestaAgent` instances. It is responsible for live-agent lookup, event fan-out, and clean shutdown. It does not model graph nodes, agent hierarchy, or message handoff.
+- `Orquesta Pi Extension`: The Pi-side adapter that is part of every `OrquestaAgent`, allowing Orquesta-managed Pi agents to call back into Orquesta coordination APIs.
+- `Orquesta RPC Origin`: The local origin of the running Orquesta server that hosts the Orquesta RPC endpoint. The app/server layer resolves the origin; Orquesta Core only carries it into agent bootstrap.
+- `Orquesta Event`: A coordination event delivered from Orquesta to an `OrquestaAgent` through the Orquesta Pi Extension. Events declare an interruption policy that determines how they enter the agent's work.
+- `Interruption Policy`: The delivery behavior for an `Orquesta Event`. `defer` injects the event into the next safe agent turn prompt or result, `steer` sends the event as steering input, and `interrupt` stops the current agent turn before sending the event as a new prompt.
 
 ## Future Direction
 

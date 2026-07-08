@@ -5,6 +5,7 @@ type MockEventListener = (event: MockAgentEvent) => void;
 
 interface MockRpcClient {
   readonly listeners: MockEventListener[];
+  readonly options: { args?: string[] };
   started: boolean;
   stopped: boolean;
   switchedSessionPath: string | undefined;
@@ -18,11 +19,13 @@ const rpc = vi.hoisted(() => ({
 vi.mock("@earendil-works/pi-coding-agent", () => {
   class RpcClient implements MockRpcClient {
     readonly listeners: MockEventListener[] = [];
+    readonly options: { args?: string[] };
     started = false;
     stopped = false;
     switchedSessionPath: string | undefined;
 
-    constructor() {
+    constructor(options: { args?: string[] } = {}) {
+      this.options = options;
       rpc.clients.push(this);
     }
 
@@ -73,10 +76,14 @@ describe("AgentRegistry", () => {
     const client = onlyClient();
 
     expect(client.started).toBe(true);
+    expect(client.options.args?.[0]).toBe("--extension");
+    expect(client.options.args?.[1]).toContain("orquesta-pi-extension");
     expect(client.switchedSessionPath).toBe("/sessions/agent-1.jsonl");
     expect(agent.id).toBe("agent-1");
     expect(agent.cwd).toBe("/workspace");
     expect(agent.sessionPath).toBe("/sessions/agent-1.jsonl");
+    expect(agent.rpc.origin).toBe("http://127.0.0.1:5173");
+    expect(agent.rpc.connectionToken).toEqual(expect.any(String));
     expect(agent.state).toBe("idle");
     expect(registry.getAgent(agent.id)).toBe(agent);
     expect(registry.listAgents()).toEqual([agent]);

@@ -3,6 +3,7 @@ import {
   type RpcClientOptions,
   type RpcEventListener,
 } from "@earendil-works/pi-coding-agent";
+import { ORQUESTA_PI_EXTENSION_PATH } from "@anchorsoft/orquesta-pi-extension";
 import { randomUUID } from "node:crypto";
 import path from "node:path";
 import { fileURLToPath } from "url";
@@ -30,6 +31,8 @@ export interface OrquestaAgentOptions {
   cwd?: string;
   /** Existing session file to switch to after startup. */
   sessionPath?: string;
+  /** Orquesta RPC bootstrap coordinates resolved by the app/server layer. */
+  rpc?: OrquestaAgentRpcOptions;
   pi?: PiConfig;
   /** Pi-specific tools. */
   tools?: string[];
@@ -43,10 +46,21 @@ export interface OrquestaAgentOptions {
   args?: string[];
 }
 
+export interface OrquestaAgentRpcOptions {
+  origin?: string;
+  connectionToken?: string;
+}
+
+export interface OrquestaAgentRpcBootstrap {
+  origin: string;
+  connectionToken: string;
+}
+
 export class OrquestaAgent {
   readonly id: AgentId;
   readonly cwd: string | undefined;
   readonly sessionPath: string | undefined;
+  readonly rpc: OrquestaAgentRpcBootstrap;
 
   #state: AgentLifecycleState = "stopped";
 
@@ -56,7 +70,8 @@ export class OrquestaAgent {
     this.id = options.id ?? randomUUID();
     this.cwd = options.cwd;
     this.sessionPath = options.sessionPath;
-    this.#pi = new RpcClient(toRpcClientOptions(options));
+    this.rpc = toRpcBootstrap(options.rpc);
+    this.#pi = new RpcClient(toRpcClientOptions(options, this.id, this.rpc));
     this.#pi.onEvent((event) => this.#handleEvent(event));
   }
 
@@ -273,9 +288,13 @@ export class OrquestaAgent {
   }
 }
 
-function toRpcClientOptions(options: OrquestaAgentOptions): RpcClientOptions {
+function toRpcClientOptions(
+  options: OrquestaAgentOptions,
+  agentId: AgentId,
+  rpc: OrquestaAgentRpcBootstrap,
+): RpcClientOptions {
   const pi = options.pi;
-  const args: string[] = [];
+  const args: string[] = ["--extension", ORQUESTA_PI_EXTENSION_PATH];
 
   if (options.tools?.length) args.push("--tools", options.tools.join(","));
   if (options.excludeTools?.length) args.push("--exclude-tools", options.excludeTools.join(","));
@@ -288,9 +307,19 @@ function toRpcClientOptions(options: OrquestaAgentOptions): RpcClientOptions {
 
   env.PI_CODING_AGENT_DIR = pi?.agentDir ?? defaultPiAgentDir;
   env.PI_CODING_AGENT_SESSION_DIR = pi?.sessionDir ?? path.join(defaultPiAgentDir, "sessions");
+  env.ORQUESTA_AGENT_ID = agentId;
+  env.ORQUESTA_AGENT_RPC_TOKEN = rpc.connectionToken;
+  env.ORQUESTA_RPC_ORIGIN = rpc.origin;
 
   const rpcOptions: RpcClientOptions = { cliPath, env, args };
   if (options.cwd) rpcOptions.cwd = options.cwd;
 
   return rpcOptions;
+}
+
+function toRpcBootstrap(options: OrquestaAgentRpcOptions | undefined): OrquestaAgentRpcBootstrap {
+  return {
+    origin: options?.origin ?? "http://127.0.0.1:5173",
+    connectionToken: options?.connectionToken ?? randomUUID(),
+  };
 }

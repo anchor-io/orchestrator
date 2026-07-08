@@ -19,6 +19,8 @@ export {
   type AgentLifecycleState,
   type AgentRegistryEvent,
   type AgentRegistryEventListener,
+  type OrquestaAgentRpcBootstrap,
+  type OrquestaAgentRpcOptions,
   type OrquestaAgentOptions,
   type RpcClientInstance,
 } from "./agents/index.ts";

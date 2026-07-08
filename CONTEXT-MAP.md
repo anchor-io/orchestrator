@@ -9,6 +9,8 @@ This is a multi-context monorepo. Each package and app owns its own domain conte
 | Root | `CONTEXT-MAP.md` (this file) | System-wide context and pointers to per-context docs. |
 | Orquesta | [`apps/orquesta/CONTEXT.md`](./apps/orquesta/CONTEXT.md) | The SvelteKit web application for anchor-orchestrator. |
 | Orquesta Core | [`packages/orquesta-core/CONTEXT.md`](./packages/orquesta-core/CONTEXT.md) | Shared orchestration-domain TypeScript for Orquesta apps. |
+| Orquesta RPC | [`packages/orquesta-rpc/CONTEXT.md`](./packages/orquesta-rpc/CONTEXT.md) | RPC infrastructure for Orquesta-to-agent coordination, starting with mailbox/channel message passing. |
+| Orquesta Pi Extension | [`packages/orquesta-pi-extension/CONTEXT.md`](./packages/orquesta-pi-extension/CONTEXT.md) | Pi-side adapter for Orquesta RPC. |
 
 ## Per-context docs
 
