@@ -13,6 +13,7 @@
         "lint": "turbo run format:check lint",
         "lint:affected": "turbo run format:check lint --affected",
         "package": "turbo run package --filter @anchorsoft/orquesta-electron",
+        "prepare": "node scripts/install-git-hooks.mjs",
         "quality": "turbo run format:check check lint test",
         "quality:affected": "turbo run format:check check lint test --affected",
         "test": "turbo run test",
