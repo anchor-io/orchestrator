@@ -1,0 +1,6 @@
+export default {
+  lineWidth: 100,
+  indentWidth: 2,
+  quoteStyle: "double",
+  semicolons: true,
+};

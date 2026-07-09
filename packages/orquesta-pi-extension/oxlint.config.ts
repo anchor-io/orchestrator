@@ -1,0 +1,15 @@
+import { defineConfig } from "oxlint";
+
+export default defineConfig({
+  options: {
+    typeAware: true,
+    typeCheck: true,
+  },
+  env: {
+    node: true,
+  },
+  ignorePatterns: ["out/**", "dist/**", "build/**", "coverage/**", "node_modules/**"],
+  rules: {
+    "no-console": "off",
+  },
+});

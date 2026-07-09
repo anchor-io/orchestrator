@@ -12,3 +12,15 @@ export {
   type Env,
   type LoadedDocument,
 } from "./config/index.ts";
+export {
+  AgentRegistry,
+  OrquestaAgent,
+  type AgentId,
+  type AgentLifecycleState,
+  type AgentRegistryEvent,
+  type AgentRegistryEventListener,
+  type OrquestaAgentRpcBootstrap,
+  type OrquestaAgentRpcOptions,
+  type OrquestaAgentOptions,
+  type RpcClientInstance,
+} from "./agents/index.ts";

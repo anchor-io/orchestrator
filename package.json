@@ -5,22 +5,26 @@
     "scripts": {
         "build": "turbo run build",
         "build:affected": "turbo run build --affected",
-        "check": "turbo run check",
-        "check:affected": "turbo run check --affected",
+        "check": "pnpm run check:scripts && turbo run check",
+        "check:affected": "pnpm run check:scripts && turbo run check --affected",
+        "check:scripts": "tsgo --project tsconfig.json --noEmit",
         "dev": "turbo run dev",
         "format": "turbo run format",
         "format:check": "turbo run format:check",
         "lint": "turbo run format:check lint",
         "lint:affected": "turbo run format:check lint --affected",
         "package": "turbo run package --filter @anchorsoft/orquesta-electron",
-        "quality": "turbo run format:check check lint test",
-        "quality:affected": "turbo run format:check check lint test --affected",
+        "prepare": "node scripts/install-git-hooks.mts",
+        "quality": "pnpm run check:scripts && turbo run format:check check lint test",
+        "quality:affected": "pnpm run check:scripts && turbo run format:check check lint test --affected",
         "test": "turbo run test",
         "test:affected": "turbo run test --affected",
         "test:e2e": "turbo run test:e2e",
         "test:unit": "turbo run test:unit"
     },
     "devDependencies": {
-        "turbo": "2.9.16"
+        "@types/node": "24",
+        "@typescript/native-preview": "7.0.0-dev.20260704.1",
+        "turbo": "2.10.3"
     }
 }

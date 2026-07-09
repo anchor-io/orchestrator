@@ -1,0 +1,23 @@
+<script lang="ts">
+  import { Tabs as TabsPrimitive } from 'bits-ui';
+  import { cn } from '../../../utils.js';
+
+  let {
+    ref = $bindable(null),
+    class: className,
+    ...restProps
+  }: TabsPrimitive.TriggerProps = $props();
+</script>
+
+<TabsPrimitive.Trigger
+  bind:ref
+  data-slot="tabs-trigger"
+  class={cn(
+    "relative inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-2 rounded-none border border-transparent px-4 py-1.5  text-xs font-medium  whitespace-nowrap text-muted-foreground/50  transition-all hover:text-foreground group-data-vertical/tabs:px-4 group-data-vertical/tabs:py-2 has-data-[icon=inline-end]:pr-2.5 has-data-[icon=inline-start]:pl-2.5 focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring/50 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 group-data-[orientation=vertical]/tabs:w-full group-data-[orientation=vertical]/tabs:justify-start [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
+    'group-data-[variant=line]/tabs-list:bg-transparent group-data-[variant=line]/tabs-list:data-active:bg-transparent dark:group-data-[variant=line]/tabs-list:data-active:border-transparent dark:group-data-[variant=line]/tabs-list:data-active:bg-transparent',
+    'data-active:border-link data-active:bg-primary data-active:text-primary-foreground dark:data-active:border-link dark:data-active:bg-primary dark:data-active:text-primary-foreground',
+    'after:absolute after:bg-primary after:opacity-0 after:transition-opacity group-data-[orientation=horizontal]/tabs:after:inset-x-0 group-data-[orientation=horizontal]/tabs:after:bottom-[-5px] group-data-[orientation=horizontal]/tabs:after:h-px group-data-[orientation=vertical]/tabs:after:inset-y-0 group-data-[orientation=vertical]/tabs:after:-right-1 group-data-[orientation=vertical]/tabs:after:w-px group-data-[variant=line]/tabs-list:data-active:after:opacity-100',
+    className
+  )}
+  {...restProps}
+/>

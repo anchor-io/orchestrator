@@ -23,4 +23,4 @@ Multi-context repo. Read `CONTEXT-MAP.md` at the root, then per-package `CONTEXT
 
 ### Turbo
 
-This codebase uses Turborepo. In case turbo configuration needs to be modified, you will find a TURBO.md file with information about how to navigate the particularities of the configuration. if you are not working with turbo, then _do not_ read TURBO.md.
+This codebase uses Turborepo. In case turbo configuration needs to be modified, you will find a TURBO.md file with information about how to navigate the particularities of the configuration. if you are not working with turbo, then _do not_ read TURBO.md. Try to always run package scripts from the monorepo root (or via turbo filters), that way caching applies.
