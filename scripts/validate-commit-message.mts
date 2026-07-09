@@ -25,6 +25,10 @@ if (!match?.groups) {
 }
 
 const scope = match.groups.scope;
+if (!scope) {
+  fail("Commit message scope is missing.");
+}
+
 if (!allowedScopes.has(scope)) {
   fail(
     [
@@ -34,7 +38,7 @@ if (!allowedScopes.has(scope)) {
   );
 }
 
-async function getAllowedScopes() {
+async function getAllowedScopes(): Promise<Set<string>> {
   const scopes = new Set(["root", "repo", "monorepo", "docs", "ci"]);
   for (const workspaceDir of ["apps", "packages"]) {
     const workspacePath = path.join(root, workspaceDir);
@@ -59,11 +63,11 @@ async function getAllowedScopes() {
   return scopes;
 }
 
-function toScope(packageName) {
+function toScope(packageName: string): string {
   return packageName.includes("/") ? packageName.slice(packageName.lastIndexOf("/") + 1) : packageName;
 }
 
-function fail(message) {
+function fail(message: string): never {
   console.error(message);
   process.exit(1);
 }

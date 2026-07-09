@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-node scripts/validate-commit-message.mjs "$1"
+node scripts/validate-commit-message.mts "$1"
